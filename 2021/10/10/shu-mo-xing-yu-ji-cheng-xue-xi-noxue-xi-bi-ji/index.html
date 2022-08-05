@@ -455,21 +455,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-10-12
+                    2021-10-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    845
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    6 分
                 </div>
                 
 
@@ -492,7 +492,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>先解决几个概念问题，比如信息量，信息熵等，这里借鉴【忆臻】大佬在知乎上的解释。</p>
+                <h2 id="Task01决策树"><a href="#Task01决策树" class="headerlink" title="Task01决策树"></a>Task01决策树</h2><p>先解决几个概念问题，比如信息量，信息熵等，这里借鉴【忆臻】大佬在知乎上的解释。</p>
 <h3 id="信息量"><a href="#信息量" class="headerlink" title="信息量"></a>信息量</h3><p>信息的大小跟随机事件的概率有关。越小概率的事情发生了产生的信息量越大，如湖南产生的地震了；越大概率的事情发生了产生的信息量越小，如太阳从东边升起来了（肯定发生嘛，没什么信息量）。这很好理解！</p>
 <ol>
 <li>一个具体事件的信息量应该是随着其发生概率而递减的，且不能为负。</li>
@@ -505,9 +505,19 @@
 <p>X给定条件下，Y的条件概率分布的熵对X的数学期望（已知随机变量X条件下随机变量Y的不确定性）<br>\[H(Y|X)=\sum_{i=1}^{n} H(Y|X=x_i)\]</p>
 </blockquote>
 <ul>
-<li>那么条件熵到底是个啥嘞….</li>
+<li>那么条件熵到底是个啥嘞….<br>这一块比较复杂。。让我想想怎么填这个坑~（再补）<br>暂时来讲，我的理解是按一个新的变量的每个值对原变量进行分类，比如天气冷暖和我穿衣服多少是有联系的。假设X表示我穿衣服多少（假设只有2种情况，穿多或者穿少），Y表示天气冷暖，那么H（Y|X）表示的是在确定路人穿衣情况下天气冷暖的情况的不确定性的数学期望。这个例子把天气冷暖按照穿的多少分为两类。在每一个小类里面，都计算一个小熵，然后每一个小熵乘以各个类别的概率，最后求和，就是条件熵。</li>
 </ul>
-<p>$y = f(x)$<br>\[y = {f_{ {g_1}}}(x)\]</p>
+<h3 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h3><p>（特征选择的一个重要指标，他定义为一个特征能够为分类系统带来多少信息，带来的信息越多，说明该特征越重要，相应的信息增益也就越大）</p>
+<h2 id="task01练习"><a href="#task01练习" class="headerlink" title="task01练习"></a>task01练习</h2><p>1.1定义X,Y的联合熵为 $H(Y,X)$ 为 ${E_{ {(Y,X)~p(x,y)}}}[−log_{ {2}}p(Y,X)]$<br>请证明如下关系： $G(Y,X)=H(X)−H(X|Y),G(Y,X)=H(X)+H(Y)−H(Y,X),G(Y,X)=H(Y,X)−H(X|Y)−H(Y|X)$<br>下图被分为了A、B和C三个区域。若AB区域代表X的不确定性，BC区域代表Y的不确定性，那么$H(X)、H(Y)、H(X|Y)、H(Y|X)、H(Y,X)和G(Y,X)$分别指代的是哪片区域？<br><img src="1.png"></p>
+<p>2.假设当前我们需要处理一个分类问题，请问对输入特征进行归一化会对树模型的类别输出产生影响吗？请解释原因。<br>不会，树模型主要依赖的是数据的信息增益基尼系数等，算是一种特征分布的顺序，归一化只改变了数值，并不改变数据的排列</p>
+<p>3.如果将系数替换为$1−\gamma^2$ ，请问对缺失值是加强了还是削弱了惩罚？<br>削弱，</p>
+<p>4.如果将树的生长策略从深度优先生长改为广度优先生长，假设其他参数保持不变的情况下，两个模型对应的结果输出可能不同吗？<br>不可能，深度优先和广度优先只是搜索时的顺序不同，结果相同</p>
+<p>5.在一般的机器学习问题中，我们总是通过一组参数来定义模型的损失函数，并且在训练集上以最小化该损失函数为目标进行优化。请问对于决策树而言，模型优化的目标是什么？<br>信息增益最大化吧</p>
+<p>6.对信息熵中的log函数在p=1处进行一阶泰勒展开可以近似为基尼系数，那么如果在p=1处进行二阶泰勒展开我们可以获得什么近似指标？请写出对应指标的信息增益公式。</p>
+<p>7.除了信息熵和基尼系数之外，我们还可以使用节点的$1−max_kp(Y=y_k)$和第m个子节点的$1−max_kp(Y=y_k|X=x_m)$来作为衡量纯度的指标。请解释其合理性并给出相应的信息增益公式。</p>
+<p>8.为什么对没有重复特征值的数据，决策树能够做到损失为0？<br>按道理来讲，一棵决策树应该会拟合全部的数据，所以就不存在损失</p>
+<p>9.如何理解min_samples_leaf参数能够控制回归树输出值的平滑程度？</p>
+<h2 id="Task03-集成模式"><a href="#Task03-集成模式" class="headerlink" title="Task03 集成模式"></a>Task03 集成模式</h2><p>$y = f(x)$<br>\[y = {f_{ {g_1}}}(x)\]</p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26486223">通俗理解信息熵</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26551798?tdsourcetag=s_pctim_aiomsg">通俗理解条件熵</a></p>
 
                 
@@ -740,18 +750,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/10/10/shu-mo-xing-yu-ji-cheng-xue-xi-noxue-xi-bi-ji/">
+                <a href="/2022/02/15/post-tian-chi-leetcode-ji-chu-xun-lian/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="树模型与集成学习の学习笔记">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="post天池Leetcode基础训练">
                         
-                        <span class="card-title">树模型与集成学习の学习笔记</span>
+                        <span class="card-title">post天池Leetcode基础训练</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -761,9 +770,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-10
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-15
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -772,7 +781,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
@@ -1007,7 +1015,7 @@
         <div class="col s12 m8 l8 copy-right">
             &copy; 2021 yali. 版权所有;<span id="sitetime"></span>
 <!--              -->
-<!--                 <span id="year">2019-2021</span> -->
+<!--                 <span id="year">2019-2022</span> -->
 <!--              -->
 <!--             <span id="year">2019</span> -->
             <a href="/about" target="_blank">yali</a>
